@@ -1,17 +1,20 @@
 import 'dart:io';
+// import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:task_6/widgets/button_widget.dart';
 
 class AddItemPage extends StatefulWidget {
+  const AddItemPage({super.key});
+
   @override
   _AddItemPageState createState() => _AddItemPageState();
 }
 
 class _AddItemPageState extends State<AddItemPage> {
   final _nameController = TextEditingController();
-  final _categoryController = TextEditingController();
+  // final _categoryController = TextEditingController();
   final _priceController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _ratingController = TextEditingController();
@@ -30,195 +33,160 @@ class _AddItemPageState extends State<AddItemPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: ListView(
-          // crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Positioned(
-                  top: 20,
-                  left: 20,
-                  child: Container(
-                    width: 40,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: Colors.white, // Background color
-                      shape: BoxShape.circle, // Circular shape
-                    ),
-                    child: IconButton(
-                      icon: const Icon(
-                        Icons.arrow_back_ios,
-                        color: Color.fromARGB(255, 79, 59, 255),
-                        size: 20,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            // crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.arrow_back_ios),
+                    color: const Color(0xff3F51F3),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          Colors.white), // White background
+                      shape: MaterialStateProperty.all<OutlinedBorder>(
+                        const CircleBorder(), // Circular shape
                       ),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ),
-                ),
-                const Expanded(
-                  child: Center(
-                    child: Text(
-                      'Add Product',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
+                      padding: MaterialStateProperty.all<EdgeInsets>(
+                        const EdgeInsets.all(
+                            16), // Adjust padding to control size
                       ),
                     ),
                   ),
-                )
-              ],
-            ),
-            const SizedBox(height: 8.0),
-            GestureDetector(
-              onTap: _pickImage,
-              child: Stack(
-                children: <Widget>[
-                  Container(
-                    width: double.infinity,
-                    height: 150,
-                    color: Colors.grey[300],
-                    child: _imageFile == null
-                        ? Center(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(
-                                  Icons.image_rounded,
-                                  size: 50,
-                                  color: Colors.grey[600],
-                                ),
-                                const SizedBox(
-                                    height: 8.0), // Space between icon and text
-                                const Text(
-                                  'Upload Image',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black, // Text color
+                  const Expanded(
+                    child: Center(
+                      child: Text(
+                        'Add Product',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              const SizedBox(height: 8.0),
+              GestureDetector(
+                onTap: _pickImage,
+                child: Stack(
+                  children: <Widget>[
+                    Container(
+                      width: double.infinity,
+                      height: 150,
+                      color: Colors.grey[300],
+                      child: _imageFile == null
+                          ? Center(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    Icons.image_rounded,
+                                    size: 50,
+                                    color: Colors.grey[600],
                                   ),
-                                ),
-                              ],
+                                  const SizedBox(
+                                      height:
+                                          8.0), // Space between icon and text
+                                  const Text(
+                                    'Upload Image',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black, // Text color
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : Image.file(
+                              _imageFile!,
+                              fit: BoxFit.cover,
                             ),
-                          )
-                        : Image.file(
-                            _imageFile!,
-                            fit: BoxFit.cover,
-                          ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16.0),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text("Name"),
+                  TextField(
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.grey[200],
+                      border: InputBorder.none,
+                    ),
                   ),
                 ],
               ),
-            ),
-            const SizedBox(height: 16.0),
-            const Text(
-              'Name',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            TextField(
-              controller: _nameController,
-            ),
-            SizedBox(height: 16.0),
-            Column(
-              children: [
-                const Text(
-                  'Category',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black, // Text color
-                  ),
-                ),
-                const SizedBox(width: 8.0), // Space between text and text field
-                Expanded(
-                  child: Container(
-                    color:
-                        Colors.grey[300], // Grey background for the text field
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 12.0, vertical: 8.0),
-                    child: const TextField(
-                      decoration: InputDecoration(
-                        border: InputBorder.none, // No border
-                      ),
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.black, // Text color in the text field
-                      ),
+              const SizedBox(height: 16.0),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text("Category"),
+                  TextField(
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.grey[200],
+                      border: InputBorder.none,
                     ),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(height: 16.0),
-            Text(
-              'Price',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _priceController,
+                ],
+              ),
+              const SizedBox(height: 16.0),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text("Price"),
+                  TextField(
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'Enter item price',
+                      filled: true,
+                      fillColor: Colors.grey[200],
+                      border: InputBorder.none,
+                      suffixText: "\$", // Dollar sign at the end
                     ),
                   ),
-                ),
-                SizedBox(width: 8.0),
-                Text(
-                  '\$',
-                  style: TextStyle(fontSize: 24),
-                ),
-              ],
-            ),
-            SizedBox(height: 16.0),
-            Text(
-              'Description',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            TextField(
-              controller: _descriptionController,
-              maxLines: 3,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'Enter item description',
+                ],
               ),
-            ),
-            SizedBox(height: 16.0),
-            Spacer(),
-            ElevatedButton(
-              onPressed: () {
-                // Handle ADD action
-                final newItem = Item(
-                  imageUrl: _imageFile?.path ?? '',
-                  name: _nameController.text,
-                  price: double.tryParse(_priceController.text) ?? 0.0,
-                  description: _descriptionController.text,
-                  rating: double.tryParse(_ratingController.text) ?? 0.0,
-                );
-                // Add newItem to your list or database
-                Navigator.pop(context, newItem);
-              },
-              child: Text('ADD'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
+              const SizedBox(height: 16.0),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text("Description"),
+                  TextField(
+                    keyboardType: TextInputType.number,
+                    maxLines: 4,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.grey[200],
+                      border: InputBorder.none,
+                    ),
+                  ),
+                ],
               ),
-            ),
-            SizedBox(width: 16.0),
-            TextButton(
-              onPressed: () {
-                // Handle DELETE action
-              },
-              child: Text('DELETE'),
-              style: TextButton.styleFrom(
-                foregroundColor: Colors.red,
+              const SizedBox(height: 16.0),
+              const ButtonWidget(
+                title: 'Add',
+                isFilled: true,
+                buttonWidth: double.infinity,
               ),
-            ),
-          ],
+              const SizedBox(height: 16.0),
+              const ButtonWidget(
+                title: 'DELETE',
+                isFilled: false,
+                buttonWidth: double.infinity,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -243,35 +211,35 @@ class Item {
 
 final List<Item> items = [
   Item(
-    imageUrl: 'images/leather.jpeg',
+    imageUrl: 'images/shoes3.jpg',
     name: 'Derby Leather Shoes',
     price: 120,
     description: 'Men’s shoe',
     rating: 4.0,
   ),
   Item(
-    imageUrl: 'images/leather.jpeg',
+    imageUrl: 'images/shoes2.jpg',
     name: 'Derby Leather Shoes',
     price: 120,
     description: 'Men’s shoe',
     rating: 4.0,
   ),
   Item(
-    imageUrl: 'images/leather.jpeg',
+    imageUrl: 'images/shoes.jpeg',
     name: 'Derby Leather Shoes',
     price: 120,
     description: 'Men’s shoe',
     rating: 4.0,
   ),
   Item(
-    imageUrl: 'images/leather.jpeg',
+    imageUrl: 'images/shoes4.jpg',
     name: 'Derby Leather Shoes',
     price: 120,
     description: 'Men’s shoe',
     rating: 4.0,
   ),
   Item(
-    imageUrl: 'images/leather.jpeg',
+    imageUrl: 'images/shoes5.jpeg',
     name: 'Derby Leather Shoes',
     price: 120,
     description: 'Men’s shoe',
