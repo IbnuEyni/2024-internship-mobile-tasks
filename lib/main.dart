@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:task_6/add_item_page.dart';
@@ -26,39 +27,69 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'July 14, 2023',
-              style: TextStyle(fontSize: 16, color: Colors.grey),
-            ),
-            RichText(
-              text: const TextSpan(
-                children: [
-                  TextSpan(
-                    text: 'Hello, ',
-                    style: TextStyle(fontSize: 16, color: Colors.grey),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  decoration: const BoxDecoration(color: Colors.black12),
+                  child: Text(''),
+                ),
+                Expanded(
+                  child: Column(
+                    children: [
+                      const Text(
+                        'July 14, 2023',
+                        style: TextStyle(fontSize: 16, color: Colors.grey),
+                      ),
+                      RichText(
+                        text: const TextSpan(
+                          children: [
+                            TextSpan(
+                              text: 'Hello, ',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.grey,
+                              ),
+                            ),
+                            TextSpan(
+                              text: 'Yonannes',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                  TextSpan(
-                    text: 'Yonannes',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Icon(
+                    Icons.notification_add,
+                    color: Colors.grey,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
             SizedBox(height: 8.0),
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
+                const Text(
                   'Available Products',
                   style: TextStyle(fontSize: 20, color: Colors.black),
                 ),
-                Icon(Icons.search, color: Color.fromARGB(255, 194, 191, 191)),
+                Container(
+                  decoration: const BoxDecoration(
+                    color: Colors.black12,
+                  ),
+                  child: Icon(Icons.search,
+                      color: Color.fromARGB(255, 194, 191, 191)),
+                ),
               ],
             ),
           ],
@@ -120,9 +151,11 @@ class HomePage extends StatelessWidget {
                             ),
                             const Icon(Icons.star,
                                 color: Colors.amber, size: 16),
-                            Text('(${item.rating})',
-                                style: const TextStyle(
-                                    fontSize: 14, color: Colors.grey)),
+                            Text(
+                              '(${item.rating})',
+                              style: const TextStyle(
+                                  fontSize: 14, color: Colors.grey),
+                            ),
                           ],
                         ),
                       ],

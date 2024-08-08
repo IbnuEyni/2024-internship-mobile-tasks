@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AddItemPage extends StatefulWidget {
@@ -29,66 +30,126 @@ class _AddItemPageState extends State<AddItemPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Add Item'),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios),
-          color: Colors.blue,
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: ListView(
           // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Upload Image',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            Row(
+              children: [
+                Positioned(
+                  top: 20,
+                  left: 20,
+                  child: Container(
+                    width: 40,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: Colors.white, // Background color
+                      shape: BoxShape.circle, // Circular shape
+                    ),
+                    child: IconButton(
+                      icon: const Icon(
+                        Icons.arrow_back_ios,
+                        color: Color.fromARGB(255, 79, 59, 255),
+                        size: 20,
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ),
+                ),
+                const Expanded(
+                  child: Center(
+                    child: Text(
+                      'Add Product',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                    ),
+                  ),
+                )
+              ],
             ),
-            SizedBox(height: 8.0),
+            const SizedBox(height: 8.0),
             GestureDetector(
               onTap: _pickImage,
-              child: Container(
-                width: double.infinity,
-                height: 150,
-                color: Colors.grey[300],
-                child: _imageFile == null
-                    ? Center(
-                        child: Icon(Icons.upload,
-                            size: 50, color: Colors.grey[600]),
-                      )
-                    : Image.file(
-                        _imageFile!,
-                        fit: BoxFit.cover,
-                      ),
+              child: Stack(
+                children: <Widget>[
+                  Container(
+                    width: double.infinity,
+                    height: 150,
+                    color: Colors.grey[300],
+                    child: _imageFile == null
+                        ? Center(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  Icons.image_rounded,
+                                  size: 50,
+                                  color: Colors.grey[600],
+                                ),
+                                const SizedBox(
+                                    height: 8.0), // Space between icon and text
+                                const Text(
+                                  'Upload Image',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black, // Text color
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        : Image.file(
+                            _imageFile!,
+                            fit: BoxFit.cover,
+                          ),
+                  ),
+                ],
               ),
             ),
-            SizedBox(height: 16.0),
-            Text(
+            const SizedBox(height: 16.0),
+            const Text(
               'Name',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             TextField(
               controller: _nameController,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'Enter item name',
-              ),
             ),
             SizedBox(height: 16.0),
-            Text(
-              'Category',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            TextField(
-              // controller: _categoryController,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'Enter item category',
-              ),
+            Column(
+              children: [
+                const Text(
+                  'Category',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black, // Text color
+                  ),
+                ),
+                const SizedBox(width: 8.0), // Space between text and text field
+                Expanded(
+                  child: Container(
+                    color:
+                        Colors.grey[300], // Grey background for the text field
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12.0, vertical: 8.0),
+                    child: const TextField(
+                      decoration: InputDecoration(
+                        border: InputBorder.none, // No border
+                      ),
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.black, // Text color in the text field
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
             SizedBox(height: 16.0),
             Text(

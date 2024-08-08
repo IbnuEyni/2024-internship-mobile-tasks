@@ -8,11 +8,40 @@ class DetailPage extends StatelessWidget {
   final Item item;
   const DetailPage({super.key, required this.item});
 
+  Widget _buildSizeContainer(String size, {bool selected = false}) {
+    return Container(
+      width: 80,
+      margin: const EdgeInsets.symmetric(horizontal: 4.0),
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: selected ? Color.fromARGB(255, 79, 59, 255) : Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            blurRadius: 1,
+            offset: Offset(1, 0),
+          ),
+        ],
+        borderRadius: BorderRadius.all(Radius.circular(5.0)),
+        border: Border.all(
+          color: selected ? Color.fromARGB(255, 79, 59, 255) : Colors.white10,
+          width: 2,
+        ),
+      ),
+      child: Text(
+        size,
+        style: TextStyle(
+          color: selected ? Colors.white : Colors.black,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      body: ListView(
         children: <Widget>[
           Stack(
             children: <Widget>[
@@ -25,11 +54,31 @@ class DetailPage extends StatelessWidget {
               Positioned(
                 top: 20,
                 left: 10,
-                child: IconButton(
-                  icon: Icon(Icons.arrow_back_ios, color: Colors.blue),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
+                child: Container(
+                  width: 40,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: Colors.white, // Background color
+                    shape: BoxShape.circle, // Circular shape
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2), // Shadow color
+                        spreadRadius: 2, // Spread radius
+                        blurRadius: 5, // Blur radius
+                        offset: Offset(0, 2), // Shadow position
+                      ),
+                    ],
+                  ),
+                  child: IconButton(
+                    icon: const Icon(
+                      Icons.arrow_back_ios,
+                      color: Color.fromARGB(255, 79, 59, 255),
+                      size: 20,
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
                 ),
               ),
             ],
@@ -70,86 +119,19 @@ class DetailPage extends StatelessWidget {
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8.0),
-                SingleChildScrollView(
-                  child: Row(
+                Container(
+                  margin: const EdgeInsets.symmetric(vertical: 6.0),
+                  height: 70,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
                     children: <Widget>[
-                      ElevatedButton(
-                        onPressed: () {},
-                        child: Text('39'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              const Color.fromARGB(255, 244, 244, 245),
-                          shape: const BeveledRectangleBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(3.0),
-                            ),
-                          ),
-                        ),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {},
-                        child: Text('40'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              const Color.fromARGB(255, 244, 244, 245),
-                          shape: const BeveledRectangleBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(3.0),
-                            ),
-                          ),
-                        ),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {},
-                        child: Text('41'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue,
-                          shape: const BeveledRectangleBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(3.0),
-                            ),
-                          ),
-                        ),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {},
-                        child: Text('42'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              const Color.fromARGB(255, 244, 244, 245),
-                          shape: const BeveledRectangleBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(3.0),
-                            ),
-                          ),
-                        ),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {},
-                        child: Text('43'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              const Color.fromARGB(255, 244, 244, 245),
-                          shape: const BeveledRectangleBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(3.0),
-                            ),
-                          ),
-                        ),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {},
-                        child: Text('44'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              const Color.fromARGB(255, 244, 244, 245),
-                          shape: const BeveledRectangleBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(3.0),
-                            ),
-                          ),
-                        ),
-                      ),
+                      _buildSizeContainer('40'),
+                      _buildSizeContainer('41', selected: true),
+                      _buildSizeContainer('42'),
+                      _buildSizeContainer('43'),
+                      _buildSizeContainer('44'),
+                      _buildSizeContainer('45'),
+                      _buildSizeContainer('46'),
                     ],
                   ),
                 ),
@@ -158,40 +140,60 @@ class DetailPage extends StatelessWidget {
                   'A derby leather shoe is a classic and versatile footwear option characterized by its open lacing system, where the shoelace eyelets are sewn on top of the vamp (the upper part of the shoe). This design feature provides a more relaxed and casual look compared to the closed lacing system of oxford shoes. Derby shoes are typically made of high-quality leather, known for its durability and elegance, making them suitable for both formal and casual occasions. With their timeless style and comfortable fit, derby leather shoes are a staple in any well-rounded wardrobe.',
                   style: TextStyle(fontSize: 14),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    TextButton(
-                      onPressed: () {
-                        // Handle DELETE action
-                      },
-                      child: Text('DELETE'),
-                      style: TextButton.styleFrom(
-                        foregroundColor: Colors.red,
-                        shape: const BeveledRectangleBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(7.0),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Container(
+                          margin: const EdgeInsets.only(
+                              right:
+                                  16.0), // Optional: Adds space between buttons
+                          child: TextButton(
+                            onPressed: () {
+                              // Handle DELETE action
+                            },
+                            child: Text('DELETE'),
+                            style: TextButton.styleFrom(
+                              foregroundColor: Colors.red, // Text color
+                              side:
+                                  BorderSide(color: Colors.red), // Border color
+                              shape: const BeveledRectangleBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(3.0),
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    SizedBox(width: 16.0),
-                    ElevatedButton(
-                      onPressed: () {
-                        // Handle UPDATE action
-                      },
-                      child: Text('UPDATE'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue,
-                        shape: const BeveledRectangleBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(3.0),
+                      Expanded(
+                        child: Container(
+                          margin: const EdgeInsets.only(
+                              right:
+                                  8.0), // Optional: Adds space between buttons
+                          child: ElevatedButton(
+                            onPressed: () {
+                              // Handle UPDATE action
+                            },
+                            child: Text('UPDATE'),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Color.fromARGB(
+                                  255, 79, 59, 255), // Background color
+                              foregroundColor: Colors.white, // Text color
+                              shape: const BeveledRectangleBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(3.0),
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
+                )
               ],
             ),
           )
