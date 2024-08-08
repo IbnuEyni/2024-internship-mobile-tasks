@@ -181,14 +181,14 @@ class HomePage extends StatelessWidget {
                             ClipRRect(
                               borderRadius: const BorderRadius.only(
                                 topLeft: Radius.circular(
-                                    32.0), // Adjust the radius as needed
+                                    40.0), // Adjust the radius as needed
                                 topRight: Radius.circular(
-                                    32.0), // Adjust the radius as needed
+                                    40.0), // Adjust the radius as needed
                               ),
                               child: Image.asset(
                                 item.imageUrl,
-                                width: double.infinity,
-                                height: 250,
+                                width: 430,
+                                height: 286,
                                 fit: BoxFit.fill,
                               ),
                             ),
