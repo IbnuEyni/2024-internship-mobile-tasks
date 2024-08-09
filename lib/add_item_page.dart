@@ -152,7 +152,10 @@ class _AddItemPageState extends State<AddItemPage> {
                       filled: true,
                       fillColor: Colors.grey[200],
                       border: InputBorder.none,
-                      suffixText: "\$", // Dollar sign at the end
+                      suffixIcon: const Padding(
+                        padding: EdgeInsets.all(5.0),
+                        child: Text("\$"),
+                      ), // Dollar sign at the end
                     ),
                   ),
                 ],
