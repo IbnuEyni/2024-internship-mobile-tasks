@@ -15,6 +15,7 @@ class ButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      onTap: onPressed,
       child: Container(
         height: 50,
         width: buttonWidth,
@@ -40,7 +41,6 @@ class ButtonWidget extends StatelessWidget {
           style: TextStyle(color: isFilled ? Colors.white : Colors.red),
         ),
       ),
-      onTap: onPressed,
     );
   }
 }

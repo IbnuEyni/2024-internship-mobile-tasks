@@ -1,12 +1,6 @@
-import 'dart:ui';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
-import 'package:task_6/add_item_page.dart';
 import 'package:task_6/detail_page.dart';
+import 'package:task_6/item.dart';
 import 'package:task_6/widgets/button_widget.dart';
 
 class SearchPage extends StatefulWidget {
@@ -49,7 +43,7 @@ class _SearchPageState extends State<SearchPage> {
                           fontSize: 16,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       TextField(
@@ -199,7 +193,7 @@ class _SearchPageState extends State<SearchPage> {
                         MaterialPageRoute(
                           builder: (BuildContext context) {
                             return DetailPage(
-                              item: item,
+                              id: item.id.toString(),
                             );
                           },
                         ),

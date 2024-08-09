@@ -1,12 +1,47 @@
 import 'package:flutter/material.dart';
-import 'package:task_6/add_item_page.dart';
+import 'package:task_6/item.dart';
 import 'package:task_6/widgets/button_widget.dart';
 import 'package:task_6/widgets/number_card.dart';
-import 'main.dart';
 
-class DetailPage extends StatelessWidget {
-  final Item item;
-  const DetailPage({super.key, required this.item});
+class DetailPage extends StatefulWidget {
+  final String id;
+  const DetailPage({super.key, required this.id});
+
+  @override
+  State<DetailPage> createState() => _DetailPageState();
+}
+
+class _DetailPageState extends State<DetailPage> {
+  void _deleteItem() {
+    for (final item in items) {
+      if (item.id.toString() == widget.id) {
+        print('iddddddd ${items.length}');
+        items.remove(item);
+        print('iddddddd ${items.length}');
+      }
+    }
+
+    Navigator.pop(context);
+  }
+
+  late Item ourItem = Item(
+      imageUrl: '',
+      name: '',
+      price: 0,
+      description: '',
+      rating: 0,
+      id: 0,
+      category: '');
+  @override
+  void initState() {
+    super.initState();
+    for (final item in items) {
+      if (item.id.toString() == widget.id) {
+        ourItem = item;
+        print('imaggggaaa ${ourItem}');
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +60,7 @@ class DetailPage extends StatelessWidget {
                           Radius.circular(40.0), // Adjust the radius as needed
                     ),
                     child: Image.asset(
-                      item.imageUrl,
+                      ourItem.imageUrl,
                       width: 430,
                       height: 286,
                       fit: BoxFit.fill,
@@ -65,14 +100,14 @@ class DetailPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Expanded(
-                          child: Text(item.description,
+                          child: Text(ourItem.description,
                               style: const TextStyle(
                                 fontSize: 14,
                                 color: Colors.grey,
                               )),
                         ),
                         const Icon(Icons.star, color: Colors.amber, size: 16),
-                        Text('(${item.rating})',
+                        Text('(${ourItem.rating})',
                             style: const TextStyle(
                                 fontSize: 14, color: Colors.grey)),
                       ],
@@ -81,12 +116,12 @@ class DetailPage extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(item.name,
+                        Text(ourItem.name,
                             style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             )),
-                        Text('\$${item.price}',
+                        Text('\$${ourItem.price}',
                             style: const TextStyle(fontSize: 16)),
                       ],
                     ),
@@ -123,13 +158,31 @@ class DetailPage extends StatelessWidget {
                           title: 'DELETE',
                           buttonWidth: 152,
                           isFilled: false,
-                          onPressed: () {},
+                          onPressed: () {
+                            _deleteItem();
+                          },
                         ),
                         ButtonWidget(
                           title: 'UPDATE',
                           buttonWidth: 152,
                           isFilled: true,
-                          onPressed: () {},
+                          onPressed: () async {
+                            final updatedProduct = await Navigator.pushNamed(
+                              context,
+                              '/update',
+                              arguments: ourItem.id.toString(),
+                            );
+
+                            // if (updatedProduct is Item) {
+                            //   setState(() {
+                            //     final index = items.indexWhere(
+                            //         (element) => element.id == ourItem.id);
+                            //     if (index != -1) {
+                            //       items[index] = updatedProduct;
+                            //     }
+                            //   });
+                            // }
+                          },
                         ),
                       ],
                     )

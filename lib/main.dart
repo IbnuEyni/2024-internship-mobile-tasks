@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:task_6/add_item_page.dart';
 import 'package:task_6/detail_page.dart';
+import 'package:task_6/item.dart';
 import 'package:task_6/search_page.dart';
 
 void main() {
@@ -11,30 +12,25 @@ void main() {
   runApp(
     MaterialApp(
       initialRoute: '/',
+      onGenerateRoute: (settings) {},
       routes: {
         '/': (context) => const HomePage(),
         '/detail': (context) {
-          Item data = (ModalRoute.of(context)?.settings.arguments) as Item;
-          return DetailPage(item: data);
+          String data = (ModalRoute.of(context)?.settings.arguments) as String;
+          return DetailPage(id: data);
         },
         '/search': (context) => const SearchPage(),
         '/add': (context) => const AddItemPage(),
+        '/update': (context) {
+          String data = (ModalRoute.of(context)?.settings.arguments) as String;
+          return AddItemPage(
+            id: data,
+          );
+        },
       },
     ),
   );
 }
-
-// class MyApp extends StatelessWidget {
-//   const MyApp({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return const MaterialApp(
-//       debugShowCheckedModeBanner: false,
-//       home: HomePage(),
-//     );
-//   }
-// }
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -44,6 +40,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  late List<Item> itemList = [];
+  @override
+  void initState() {
+    super.initState();
+    itemList = items;
+    print('kkkkkkkkkkkkkkkk ${itemList.length}');
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -151,7 +155,7 @@ class _HomePageState extends State<HomePage> {
                         color: Colors.white,
                         border: Border.all(
                           width: 1,
-                          color: Color(0xffD9D9D9),
+                          color: const Color(0xffD9D9D9),
                         ),
                         borderRadius: const BorderRadius.all(
                           Radius.circular(5),
@@ -174,15 +178,15 @@ class _HomePageState extends State<HomePage> {
               ),
               Expanded(
                 child: ListView.builder(
-                  itemCount: items.length,
+                  itemCount: itemList.length,
                   itemBuilder: (context, index) {
-                    final item = items[index];
+                    final item = itemList[index];
                     return GestureDetector(
                       onTap: () {
                         Navigator.pushNamed(
                           context,
                           '/detail',
-                          arguments: item,
+                          arguments: item.id.toString(),
                         );
                       },
                       child: Card(

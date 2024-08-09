@@ -3,10 +3,12 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:task_6/item.dart';
 import 'package:task_6/widgets/button_widget.dart';
 
 class AddItemPage extends StatefulWidget {
-  const AddItemPage({super.key});
+  final String? id;
+  const AddItemPage({super.key, this.id});
 
   @override
   _AddItemPageState createState() => _AddItemPageState();
@@ -20,6 +22,32 @@ class _AddItemPageState extends State<AddItemPage> {
   // final _ratingController = TextEditingController();
   File? _imageFile; // To store the selected image file
 
+  late Item ourItem = Item(
+      imageUrl: '',
+      name: '',
+      price: 0,
+      description: '',
+      rating: 0,
+      id: 0,
+      category: '');
+  @override
+  void initState() {
+    super.initState();
+    for (final item in items) {
+      if (item.id.toString() == widget.id) {
+        ourItem = item;
+      }
+    }
+
+    if (widget.id != null) {
+      _nameController.text = ourItem.name;
+      _categoryController.text = ourItem.category;
+      _priceController.text = ourItem.price.toString();
+      _descriptionController.text = ourItem.description;
+      _imageFile = File(ourItem.imageUrl);
+    }
+  }
+
   Future<void> _pickImage() async {
     final ImagePicker _picker = ImagePicker();
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
@@ -28,6 +56,33 @@ class _AddItemPageState extends State<AddItemPage> {
         _imageFile = File(pickedFile.path);
       });
     }
+  }
+
+  void _updateItem() {
+    final String newname = _nameController.text;
+    final String newcategory = _categoryController.text;
+    final double newpriceText = double.parse(_priceController.text);
+    final String newdescription = _descriptionController.text;
+
+    for (final item in items) {
+      if (item.id.toString() == widget.id) {
+        item.category = newcategory;
+        item.description = newdescription;
+        item.name = newname;
+        item.price = newpriceText;
+      }
+    }
+
+    _nameController.clear();
+    _categoryController.clear();
+    _priceController.clear();
+    _descriptionController.clear();
+    setState(() {
+      _imageFile = null;
+    });
+
+    Navigator.pop(context, widget.id.toString());
+    Navigator.pop(context);
   }
 
   void _addItem() {
@@ -43,11 +98,13 @@ class _AddItemPageState extends State<AddItemPage> {
       final double price = double.tryParse(priceText) ?? 0.0;
 
       final newItem = Item(
-        imageUrl: 'images/shoes3.jpg',
+        imageUrl: 'images/shoes4.jpg',
         name: name,
+        category: category,
         price: price,
         description: description,
         rating: 4.0,
+        id: ourItem.id ?? items.length + 1,
       );
       setState(() {
         // items.add(newItem);
@@ -72,8 +129,13 @@ class _AddItemPageState extends State<AddItemPage> {
     }
   }
 
+  // void _deleteItem() {
+  //   Navigator.pop(context, 'delete');
+  // }
+
   @override
   Widget build(BuildContext context) {
+    bool isEditing = (widget.id != null);
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -104,7 +166,7 @@ class _AddItemPageState extends State<AddItemPage> {
                   const Expanded(
                     child: Center(
                       child: Text(
-                        'Add Product',
+                        'Add/Edit Product',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
@@ -123,7 +185,7 @@ class _AddItemPageState extends State<AddItemPage> {
                       width: double.infinity,
                       height: 150,
                       color: Colors.grey[300],
-                      child: _imageFile == null
+                      child: widget.id == null
                           ? Center(
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
@@ -224,20 +286,23 @@ class _AddItemPageState extends State<AddItemPage> {
               ),
               const SizedBox(height: 16.0),
               ButtonWidget(
-                title: 'Add',
+                title: isEditing ? 'Update' : 'Add',
                 isFilled: true,
                 buttonWidth: double.infinity,
                 onPressed: () {
-                  _addItem();
+                  // _addItem();
+                  _updateItem();
                 },
               ),
-              const SizedBox(height: 16.0),
-              ButtonWidget(
-                title: 'DELETE',
-                isFilled: false,
-                buttonWidth: double.infinity,
-                onPressed: () {}, // Add this line even if it does nothing
-              ),
+              if (isEditing) const SizedBox(height: 16.0),
+              // if (isEditing)
+              //   ButtonWidget(
+              //       title: 'DELETE',
+              //       isFilled: false,
+              //       buttonWidth: double.infinity,
+              //       onPressed:
+              //           _deleteItem // Add this line even if it does nothing
+              //       ),
             ],
           ),
         ),
@@ -245,57 +310,3 @@ class _AddItemPageState extends State<AddItemPage> {
     );
   }
 }
-
-class Item {
-  final String imageUrl;
-  final String name;
-  final double price;
-  final String description;
-  final double rating;
-
-  Item({
-    required this.imageUrl,
-    required this.name,
-    required this.price,
-    required this.description,
-    required this.rating,
-  });
-}
-
-final List<Item> items = [
-  Item(
-    imageUrl: 'images/shoes3.jpg',
-    name: 'Derby Leather Shoes',
-    price: 120,
-    description: 'Men’s shoe',
-    rating: 4.0,
-  ),
-  Item(
-    imageUrl: 'images/shoes2.jpg',
-    name: 'Derby Leather Shoes',
-    price: 120,
-    description: 'Men’s shoe',
-    rating: 4.0,
-  ),
-  Item(
-    imageUrl: 'images/shoes.jpeg',
-    name: 'Derby Leather Shoes',
-    price: 120,
-    description: 'Men’s shoe',
-    rating: 4.0,
-  ),
-  Item(
-    imageUrl: 'images/shoes4.jpg',
-    name: 'Derby Leather Shoes',
-    price: 120,
-    description: 'Men’s shoe',
-    rating: 4.0,
-  ),
-  Item(
-    imageUrl: 'images/shoes5.jpeg',
-    name: 'Derby Leather Shoes',
-    price: 120,
-    description: 'Men’s shoe',
-    rating: 4.0,
-  ),
-];
