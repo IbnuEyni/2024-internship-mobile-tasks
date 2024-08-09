@@ -92,10 +92,11 @@ class _SearchPageState extends State<SearchPage> {
                   const SizedBox(
                     height: 40,
                   ),
-                  const ButtonWidget(
+                  ButtonWidget(
                     title: 'Apply',
                     isFilled: true,
                     buttonWidth: double.infinity,
+                    onPressed: () {},
                   )
                 ],
               ),

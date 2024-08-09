@@ -14,10 +14,10 @@ class AddItemPage extends StatefulWidget {
 
 class _AddItemPageState extends State<AddItemPage> {
   final _nameController = TextEditingController();
-  // final _categoryController = TextEditingController();
+  final _categoryController = TextEditingController();
   final _priceController = TextEditingController();
   final _descriptionController = TextEditingController();
-  final _ratingController = TextEditingController();
+  // final _ratingController = TextEditingController();
   File? _imageFile; // To store the selected image file
 
   Future<void> _pickImage() async {
@@ -27,6 +27,48 @@ class _AddItemPageState extends State<AddItemPage> {
       setState(() {
         _imageFile = File(pickedFile.path);
       });
+    }
+  }
+
+  void _addItem() {
+    final String name = _nameController.text;
+    final String category = _categoryController.text;
+    final String priceText = _priceController.text;
+    final String description = _descriptionController.text;
+
+    if (name.isNotEmpty &&
+        category.isNotEmpty &&
+        priceText.isNotEmpty &&
+        description.isNotEmpty) {
+      final double price = double.tryParse(priceText) ?? 0.0;
+
+      final newItem = Item(
+        imageUrl: 'images/shoes3.jpg',
+        name: name,
+        price: price,
+        description: description,
+        rating: 4.0,
+      );
+      setState(() {
+        // items.add(newItem);
+        debugPrint('item is added!');
+      });
+
+      _nameController.clear();
+      _categoryController.clear();
+      _priceController.clear();
+      _descriptionController.clear();
+      setState(() {
+        _imageFile = null;
+      });
+
+      Navigator.pop(context, newItem);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Please fill all fields and upload an image."),
+        ),
+      );
     }
   }
 
@@ -107,7 +149,7 @@ class _AddItemPageState extends State<AddItemPage> {
                             )
                           : Image.file(
                               _imageFile!,
-                              fit: BoxFit.cover,
+                              fit: BoxFit.fill,
                             ),
                     ),
                   ],
@@ -119,6 +161,7 @@ class _AddItemPageState extends State<AddItemPage> {
                 children: [
                   const Text("Name"),
                   TextField(
+                    controller: _nameController,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: Colors.grey[200],
@@ -133,6 +176,7 @@ class _AddItemPageState extends State<AddItemPage> {
                 children: [
                   const Text("Category"),
                   TextField(
+                    controller: _categoryController,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: Colors.grey[200],
@@ -147,6 +191,7 @@ class _AddItemPageState extends State<AddItemPage> {
                 children: [
                   const Text("Price"),
                   TextField(
+                    controller: _priceController,
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       filled: true,
@@ -166,6 +211,7 @@ class _AddItemPageState extends State<AddItemPage> {
                 children: [
                   const Text("Description"),
                   TextField(
+                    controller: _descriptionController,
                     keyboardType: TextInputType.number,
                     maxLines: 4,
                     decoration: InputDecoration(
@@ -177,16 +223,20 @@ class _AddItemPageState extends State<AddItemPage> {
                 ],
               ),
               const SizedBox(height: 16.0),
-              const ButtonWidget(
+              ButtonWidget(
                 title: 'Add',
                 isFilled: true,
                 buttonWidth: double.infinity,
+                onPressed: () {
+                  _addItem();
+                },
               ),
               const SizedBox(height: 16.0),
-              const ButtonWidget(
+              ButtonWidget(
                 title: 'DELETE',
                 isFilled: false,
                 buttonWidth: double.infinity,
+                onPressed: () {}, // Add this line even if it does nothing
               ),
             ],
           ),

@@ -116,18 +116,20 @@ class DetailPage extends StatelessWidget {
                     const SizedBox(
                       height: 24,
                     ),
-                    const Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         ButtonWidget(
                           title: 'DELETE',
                           buttonWidth: 152,
                           isFilled: false,
+                          onPressed: () {},
                         ),
                         ButtonWidget(
                           title: 'UPDATE',
                           buttonWidth: 152,
                           isFilled: true,
+                          onPressed: () {},
                         ),
                       ],
                     )

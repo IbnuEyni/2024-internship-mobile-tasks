@@ -1,3 +1,5 @@
+// import 'dart:js';
+
 import 'package:flutter/material.dart';
 
 import 'package:task_6/add_item_page.dart';
@@ -5,24 +7,43 @@ import 'package:task_6/detail_page.dart';
 import 'package:task_6/search_page.dart';
 
 void main() {
-  runApp(const MyApp());
+  // var item;
+  runApp(
+    MaterialApp(
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const HomePage(),
+        '/detail': (context) {
+          Item data = (ModalRoute.of(context)?.settings.arguments) as Item;
+          return DetailPage(item: data);
+        },
+        '/search': (context) => const SearchPage(),
+        '/add': (context) => const AddItemPage(),
+      },
+    ),
+  );
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+// class MyApp extends StatelessWidget {
+//   const MyApp({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: HomePage(),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return const MaterialApp(
+//       debugShowCheckedModeBanner: false,
+//       home: HomePage(),
+//     );
+//   }
+// }
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -146,12 +167,7 @@ class HomePage extends StatelessWidget {
                     ),
                     onTap: () {
                       // _showSearchModal(context);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const SearchPage(),
-                        ),
-                      );
+                      Navigator.pushNamed(context, '/search');
                     },
                   ),
                 ],
@@ -163,14 +179,10 @@ class HomePage extends StatelessWidget {
                     final item = items[index];
                     return GestureDetector(
                       onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (BuildContext context) {
-                              return DetailPage(
-                                item: item,
-                              );
-                            },
-                          ),
+                        Navigator.pushNamed(
+                          context,
+                          '/detail',
+                          arguments: item,
                         );
                       },
                       child: Card(
@@ -180,10 +192,8 @@ class HomePage extends StatelessWidget {
                           children: [
                             ClipRRect(
                               borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(
-                                    40.0), // Adjust the radius as needed
-                                topRight: Radius.circular(
-                                    40.0), // Adjust the radius as needed
+                                topLeft: Radius.circular(40.0),
+                                topRight: Radius.circular(40.0),
                               ),
                               child: Image.asset(
                                 item.imageUrl,
@@ -244,11 +254,11 @@ class HomePage extends StatelessWidget {
         floatingActionButton: FloatingActionButton(
           backgroundColor: const Color(0xff3F51F3),
           shape: const CircleBorder(eccentricity: 0.7),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const AddItemPage()),
-            );
+          onPressed: () async {
+            final product = await Navigator.pushNamed(context, '/add') as Item;
+            setState(() {
+              items.add(product);
+            });
           },
           child: const Icon(
             Icons.add,
