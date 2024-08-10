@@ -13,15 +13,15 @@ class DetailPage extends StatefulWidget {
 
 class _DetailPageState extends State<DetailPage> {
   void _deleteItem() {
-    for (final item in items) {
-      if (item.id.toString() == widget.id) {
-        print('iddddddd ${items.length}');
-        items.remove(item);
-        print('iddddddd ${items.length}');
-      }
-    }
+    // for (final item in items) {
+    //   if (item.id.toString() == widget.id) {
+    //     print('iddddddd ${items.length}');
+    //     items.remove(item);
+    //     print('iddddddd ${items.length}');
+    //   }
+    // }
 
-    Navigator.pop(context);
+    Navigator.pop(context, 'delete');
   }
 
   late Item ourItem = Item(

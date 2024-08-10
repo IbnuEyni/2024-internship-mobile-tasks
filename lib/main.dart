@@ -11,10 +11,21 @@ void main() {
   // var item;
   runApp(
     MaterialApp(
+      debugShowCheckedModeBanner: false,
       initialRoute: '/',
       onGenerateRoute: (settings) {},
       routes: {
-        '/': (context) => const HomePage(),
+        '/': (context) {
+          if (ModalRoute.of(context)?.settings.arguments != null) {
+            Map data = (ModalRoute.of(context)?.settings.arguments) as Map;
+            return HomePage(
+              map: data,
+            );
+          }
+          return HomePage(
+            map: {},
+          );
+        },
         '/detail': (context) {
           String data = (ModalRoute.of(context)?.settings.arguments) as String;
           return DetailPage(id: data);
@@ -33,19 +44,38 @@ void main() {
 }
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final Map map;
+  const HomePage({super.key, required this.map});
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  late List<Item> itemList = [];
+  // late List<Item> itemList = [];
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   itemList = items;
+  //   print('kkkkkkkkkkkkkkkk ${itemList.length}');
+  // }
+
+  // { "id":1, "item":object }
   @override
   void initState() {
-    super.initState();
-    itemList = items;
-    print('kkkkkkkkkkkkkkkk ${itemList.length}');
+    // TODO: implement initState
+    if (widget.map.containsKey('id')) {
+      var cnt = 0;
+      for (var item in items) {
+        if (item.id.toString() == widget.map["id"]) {
+          setState(() {
+            items[cnt] = widget.map["item"];
+            print("updatedddddddddddd");
+          });
+        }
+        cnt++;
+      }
+    }
   }
 
   @override
@@ -178,16 +208,27 @@ class _HomePageState extends State<HomePage> {
               ),
               Expanded(
                 child: ListView.builder(
-                  itemCount: itemList.length,
+                  itemCount: items.length,
                   itemBuilder: (context, index) {
-                    final item = itemList[index];
+                    final item = items[index];
                     return GestureDetector(
-                      onTap: () {
-                        Navigator.pushNamed(
+                      onTap: () async {
+                        final product = await Navigator.pushNamed(
                           context,
                           '/detail',
                           arguments: item.id.toString(),
                         );
+                        if (product == 'delete') {
+                          for (final itm in items) {
+                            if (itm.id == item.id) {
+                              print('iddddddd ${items.length}');
+                              setState(() {
+                                items.remove(item);
+                              });
+                              print('iddddddd ${items.length}');
+                            }
+                          }
+                        }
                       },
                       child: Card(
                         margin: const EdgeInsets.all(8.0),

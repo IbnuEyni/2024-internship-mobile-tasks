@@ -61,28 +61,45 @@ class _AddItemPageState extends State<AddItemPage> {
   void _updateItem() {
     final String newname = _nameController.text;
     final String newcategory = _categoryController.text;
-    final double newpriceText = double.parse(_priceController.text);
+    final String newpriceText = _priceController.text;
     final String newdescription = _descriptionController.text;
 
-    for (final item in items) {
-      if (item.id.toString() == widget.id) {
-        item.category = newcategory;
-        item.description = newdescription;
-        item.name = newname;
-        item.price = newpriceText;
-      }
+    // for (final item in items) {
+    //   if (item.id.toString() == widget.id) {
+    //     item.category = newcategory;
+    //     item.description = newdescription;
+    //     item.name = newname;
+    //     // item.price = newpriceText;
+    //   }
+    // }
+    if (newname.isNotEmpty &&
+        newcategory.isNotEmpty &&
+        newpriceText.isNotEmpty &&
+        newdescription.isNotEmpty) {
+      final double price = double.tryParse(newpriceText) ?? 0.0;
+
+      final updatedItem = Item(
+        imageUrl: 'images/shoes4.jpg',
+        name: newname,
+        category: newcategory,
+        price: price,
+        description: newdescription,
+        rating: 4.0,
+        id: int.parse(widget.id!),
+      );
+
+      _nameController.clear();
+      _categoryController.clear();
+      _priceController.clear();
+      _descriptionController.clear();
+      setState(() {
+        _imageFile = null;
+      });
+
+      // Navigator.pop(context, widget.id.toString());
+      Navigator.pushNamed(context, '/',
+          arguments: {'id': widget.id.toString(), 'item': updatedItem});
     }
-
-    _nameController.clear();
-    _categoryController.clear();
-    _priceController.clear();
-    _descriptionController.clear();
-    setState(() {
-      _imageFile = null;
-    });
-
-    Navigator.pop(context, widget.id.toString());
-    Navigator.pop(context);
   }
 
   void _addItem() {
@@ -285,15 +302,26 @@ class _AddItemPageState extends State<AddItemPage> {
                 ],
               ),
               const SizedBox(height: 16.0),
-              ButtonWidget(
-                title: isEditing ? 'Update' : 'Add',
-                isFilled: true,
-                buttonWidth: double.infinity,
-                onPressed: () {
-                  // _addItem();
-                  _updateItem();
-                },
-              ),
+              if (isEditing)
+                ButtonWidget(
+                  title: 'Update',
+                  isFilled: true,
+                  buttonWidth: double.infinity,
+                  onPressed: () {
+                    // _addItem();
+                    _updateItem();
+                  },
+                ),
+              if (!isEditing)
+                ButtonWidget(
+                  title: 'Add',
+                  isFilled: true,
+                  buttonWidth: double.infinity,
+                  onPressed: () {
+                    _addItem();
+                    // _updateItem();
+                  },
+                ),
               if (isEditing) const SizedBox(height: 16.0),
               // if (isEditing)
               //   ButtonWidget(
