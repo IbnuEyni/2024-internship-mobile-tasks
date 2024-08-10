@@ -121,7 +121,7 @@ class _AddItemPageState extends State<AddItemPage> {
         price: price,
         description: description,
         rating: 4.0,
-        id: ourItem.id ?? items.length + 1,
+        id: items.length + 1,
       );
       setState(() {
         // items.add(newItem);

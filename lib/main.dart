@@ -13,31 +13,126 @@ void main() {
     MaterialApp(
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
-      onGenerateRoute: (settings) {},
-      routes: {
-        '/': (context) {
-          if (ModalRoute.of(context)?.settings.arguments != null) {
-            Map data = (ModalRoute.of(context)?.settings.arguments) as Map;
-            return HomePage(
-              map: data,
+      onGenerateRoute: (settings) {
+        switch (settings.name) {
+          case '/':
+            return PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  const HomePage(
+                map: {},
+              ),
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) {
+                const begin = Offset(0.0, 1.0);
+                const end = Offset.zero;
+                const curve = Curves.ease;
+
+                final tween = Tween(begin: begin, end: end);
+                final curvedAnimation = CurvedAnimation(
+                  parent: animation,
+                  curve: curve,
+                );
+
+                return SlideTransition(
+                  position: tween.animate(curvedAnimation),
+                  child: child,
+                );
+              },
             );
-          }
-          return HomePage(
-            map: {},
-          );
-        },
-        '/detail': (context) {
-          String data = (ModalRoute.of(context)?.settings.arguments) as String;
-          return DetailPage(id: data);
-        },
-        '/search': (context) => const SearchPage(),
-        '/add': (context) => const AddItemPage(),
-        '/update': (context) {
-          String data = (ModalRoute.of(context)?.settings.arguments) as String;
-          return AddItemPage(
-            id: data,
-          );
-        },
+          case '/detail':
+            String id = settings.arguments as String;
+            return PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  DetailPage(id: id),
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) {
+                const begin = Offset(0.0, 1.0);
+                const end = Offset.zero;
+                const curve = Curves.ease;
+
+                final tween = Tween(begin: begin, end: end);
+                final curvedAnimation = CurvedAnimation(
+                  parent: animation,
+                  curve: curve,
+                );
+
+                return SlideTransition(
+                  position: tween.animate(curvedAnimation),
+                  child: child,
+                );
+              },
+            );
+          case '/add':
+            return PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  const AddItemPage(),
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) {
+                const begin = Offset(0.0, 1.0);
+                const end = Offset.zero;
+                const curve = Curves.ease;
+
+                final tween = Tween(begin: begin, end: end);
+                final curvedAnimation = CurvedAnimation(
+                  parent: animation,
+                  curve: curve,
+                );
+
+                return SlideTransition(
+                  position: tween.animate(curvedAnimation),
+                  child: child,
+                );
+              },
+            );
+          case '/update':
+            String data = settings.arguments as String;
+            return PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  AddItemPage(
+                id: data,
+              ),
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) {
+                const begin = Offset(0.0, 1.0);
+                const end = Offset.zero;
+                const curve = Curves.ease;
+
+                final tween = Tween(begin: begin, end: end);
+                final curvedAnimation = CurvedAnimation(
+                  parent: animation,
+                  curve: curve,
+                );
+
+                return SlideTransition(
+                  position: tween.animate(curvedAnimation),
+                  child: child,
+                );
+              },
+            );
+
+          case '/search':
+            return PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  const SearchPage(),
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) {
+                const begin = Offset(0.0, 1.0);
+                const end = Offset.zero;
+                const curve = Curves.ease;
+
+                final tween = Tween(begin: begin, end: end);
+                final curvedAnimation = CurvedAnimation(
+                  parent: animation,
+                  curve: curve,
+                );
+
+                return SlideTransition(
+                  position: tween.animate(curvedAnimation),
+                  child: child,
+                );
+              },
+            );
+        }
       },
     ),
   );
@@ -201,7 +296,10 @@ class _HomePageState extends State<HomePage> {
                     ),
                     onTap: () {
                       // _showSearchModal(context);
-                      Navigator.pushNamed(context, '/search');
+                      Navigator.pushNamed(
+                        context,
+                        '/search',
+                      );
                     },
                   ),
                 ],
