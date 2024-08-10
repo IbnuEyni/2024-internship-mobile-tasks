@@ -36,6 +36,7 @@ class _AddItemPageState extends State<AddItemPage> {
     for (final item in items) {
       if (item.id.toString() == widget.id) {
         ourItem = item;
+        print('tooooupdateeeeeeee');
       }
     }
 
@@ -53,7 +54,7 @@ class _AddItemPageState extends State<AddItemPage> {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       setState(() {
-        _imageFile = File(pickedFile.path);
+        _imageFile = pickedFile.path as File?;
       });
     }
   }
@@ -226,10 +227,12 @@ class _AddItemPageState extends State<AddItemPage> {
                                 ],
                               ),
                             )
-                          : Image.file(
-                              _imageFile!,
-                              fit: BoxFit.fill,
-                            ),
+                          : (_imageFile != null)
+                              ? Image.file(
+                                  _imageFile!,
+                                  fit: BoxFit.fill,
+                                )
+                              : Placeholder(),
                     ),
                   ],
                 ),

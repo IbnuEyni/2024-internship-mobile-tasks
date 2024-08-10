@@ -16,9 +16,9 @@ void main() {
       onGenerateRoute: (settings) {
         switch (settings.name) {
           case '/':
+            Map? map = settings.arguments as Map?;
             return PageRouteBuilder(
-              pageBuilder: (context, animation, secondaryAnimation) =>
-                  const HomePage(
+              pageBuilder: (context, animation, secondaryAnimation) => HomePage(
                 map: {},
               ),
               transitionsBuilder:
@@ -158,7 +158,11 @@ class _HomePageState extends State<HomePage> {
   // { "id":1, "item":object }
   @override
   void initState() {
-    // TODO: implement initState
+    super.initState();
+    updateItems();
+  }
+
+  void updateItems() {
     if (widget.map.containsKey('id')) {
       var cnt = 0;
       for (var item in items) {
