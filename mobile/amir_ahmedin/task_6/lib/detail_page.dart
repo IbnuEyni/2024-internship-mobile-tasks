@@ -1,201 +1,201 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:task_6/add_item_page.dart';
-import 'main.dart';
+import 'package:task_6/item.dart';
+import 'package:task_6/widgets/button_widget.dart';
+import 'package:task_6/widgets/number_card.dart';
 
-class DetailPage extends StatelessWidget {
-  final Item item;
-  const DetailPage({super.key, required this.item});
+class DetailPage extends StatefulWidget {
+  final String id;
+  const DetailPage({super.key, required this.id});
+
+  @override
+  State<DetailPage> createState() => _DetailPageState();
+}
+
+class _DetailPageState extends State<DetailPage> {
+  void _deleteItem() {
+    // for (final item in items) {
+    //   if (item.id.toString() == widget.id) {
+    //     print('iddddddd ${items.length}');
+    //     items.remove(item);
+    //     print('iddddddd ${items.length}');
+    //   }
+    // }
+
+    Navigator.pop(context, 'delete');
+  }
+
+  late Item ourItem = Item(
+      imageUrl: '',
+      name: '',
+      price: 0,
+      description: '',
+      rating: 0,
+      id: 0,
+      category: '');
+  @override
+  void initState() {
+    super.initState();
+    for (final item in items) {
+      if (item.id.toString() == widget.id) {
+        ourItem = item;
+        print('imaggggaaa ${ourItem}');
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Stack(
+    return SafeArea(
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: Column(
             children: <Widget>[
-              Image.asset(
-                item.imageUrl,
-                width: double.infinity,
-                height: 250,
-                fit: BoxFit.cover,
+              Stack(
+                children: <Widget>[
+                  ClipRRect(
+                    borderRadius: const BorderRadius.only(
+                      topLeft:
+                          Radius.circular(40.0), // Adjust the radius as needed
+                      topRight:
+                          Radius.circular(40.0), // Adjust the radius as needed
+                    ),
+                    child: Image.asset(
+                      ourItem.imageUrl,
+                      width: 430,
+                      height: 286,
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                  Positioned(
+                    top: 20,
+                    left: 10,
+                    child: IconButton(
+                      icon: const Icon(Icons.arrow_back_ios),
+                      iconSize: 20,
+                      color: const Color(0xff3F51F3),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            Colors.white), // White background
+                        shape: MaterialStateProperty.all<OutlinedBorder>(
+                          const CircleBorder(), // Circular shape
+                        ),
+                        padding: MaterialStateProperty.all<EdgeInsets>(
+                          const EdgeInsets.all(
+                              10), // Adjust padding to control size
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              Positioned(
-                top: 20,
-                left: 10,
-                child: IconButton(
-                  icon: Icon(Icons.arrow_back_ios, color: Colors.blue),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Text(ourItem.description,
+                              style: const TextStyle(
+                                fontSize: 14,
+                                color: Colors.grey,
+                              )),
+                        ),
+                        const Icon(Icons.star, color: Colors.amber, size: 16),
+                        Text('(${ourItem.rating})',
+                            style: const TextStyle(
+                                fontSize: 14, color: Colors.grey)),
+                      ],
+                    ),
+                    const SizedBox(height: 16.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(ourItem.name,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            )),
+                        Text('\$${ourItem.price}',
+                            style: const TextStyle(fontSize: 16)),
+                      ],
+                    ),
+                    const SizedBox(height: 16.0),
+                    const Text(
+                      'Size:',
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 16.0),
+                    Container(
+                      margin: const EdgeInsets.symmetric(vertical: 6.0),
+                      height: 50,
+                      child: ListView.builder(
+                        itemBuilder: (context, index) {
+                          return NumberCard(size: '${index + 39}');
+                        },
+                        scrollDirection: Axis.horizontal,
+                        itemCount: 6,
+                      ),
+                    ),
+                    const SizedBox(height: 16.0),
+                    const Text(
+                      'A derby leather shoe is a classic and versatile footwear option characterized by its open lacing system,'
+                      'where the shoelace eyelets are sewn on top of the vamp (the upper part of the shoe). This design feature '
+                      'provides a more relaxed and casual look compared to the closed lacing system of oxford shoes. Derby shoes are '
+                      'typically made of high-quality leather, known for its durability and elegance, making them suitable for both formal'
+                      ' and casual occasions. With their timeless style and comfortable fit, derby leather shoes are a staple in any well-rounded wardrobe.',
+                      style: TextStyle(fontSize: 14),
+                    ),
+                    const SizedBox(
+                      height: 24,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        ButtonWidget(
+                          title: 'DELETE',
+                          buttonWidth: 152,
+                          isFilled: false,
+                          onPressed: () {
+                            _deleteItem();
+                          },
+                        ),
+                        ButtonWidget(
+                          title: 'UPDATE',
+                          buttonWidth: 152,
+                          isFilled: true,
+                          onPressed: () async {
+                            final updatedProduct = await Navigator.pushNamed(
+                              context,
+                              '/update',
+                              arguments: ourItem.id.toString(),
+                            );
+
+                            // if (updatedProduct is Item) {
+                            //   setState(() {
+                            //     final index = items.indexWhere(
+                            //         (element) => element.id == ourItem.id);
+                            //     if (index != -1) {
+                            //       items[index] = updatedProduct;
+                            //     }
+                            //   });
+                            // }
+                          },
+                        ),
+                      ],
+                    )
+                  ],
                 ),
-              ),
+              )
             ],
           ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Text(item.description,
-                          style: const TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey,
-                          )),
-                    ),
-                    const Icon(Icons.star, color: Colors.amber, size: 16),
-                    Text('(${item.rating})',
-                        style:
-                            const TextStyle(fontSize: 14, color: Colors.grey)),
-                  ],
-                ),
-                const SizedBox(height: 16.0),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(item.name, style: const TextStyle(fontSize: 18)),
-                    Text('\$${item.price}',
-                        style: const TextStyle(fontSize: 16)),
-                  ],
-                ),
-                const SizedBox(height: 16.0),
-                const Text(
-                  'Size:',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 8.0),
-                SingleChildScrollView(
-                  child: Row(
-                    children: <Widget>[
-                      ElevatedButton(
-                        onPressed: () {},
-                        child: Text('39'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              const Color.fromARGB(255, 244, 244, 245),
-                          shape: const BeveledRectangleBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(3.0),
-                            ),
-                          ),
-                        ),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {},
-                        child: Text('40'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              const Color.fromARGB(255, 244, 244, 245),
-                          shape: const BeveledRectangleBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(3.0),
-                            ),
-                          ),
-                        ),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {},
-                        child: Text('41'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue,
-                          shape: const BeveledRectangleBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(3.0),
-                            ),
-                          ),
-                        ),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {},
-                        child: Text('42'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              const Color.fromARGB(255, 244, 244, 245),
-                          shape: const BeveledRectangleBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(3.0),
-                            ),
-                          ),
-                        ),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {},
-                        child: Text('43'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              const Color.fromARGB(255, 244, 244, 245),
-                          shape: const BeveledRectangleBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(3.0),
-                            ),
-                          ),
-                        ),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {},
-                        child: Text('44'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              const Color.fromARGB(255, 244, 244, 245),
-                          shape: const BeveledRectangleBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(3.0),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 16.0),
-                const Text(
-                  'A derby leather shoe is a classic and versatile footwear option characterized by its open lacing system, where the shoelace eyelets are sewn on top of the vamp (the upper part of the shoe). This design feature provides a more relaxed and casual look compared to the closed lacing system of oxford shoes. Derby shoes are typically made of high-quality leather, known for its durability and elegance, making them suitable for both formal and casual occasions. With their timeless style and comfortable fit, derby leather shoes are a staple in any well-rounded wardrobe.',
-                  style: TextStyle(fontSize: 14),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    TextButton(
-                      onPressed: () {
-                        // Handle DELETE action
-                      },
-                      child: Text('DELETE'),
-                      style: TextButton.styleFrom(
-                        foregroundColor: Colors.red,
-                        shape: const BeveledRectangleBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(7.0),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 16.0),
-                    ElevatedButton(
-                      onPressed: () {
-                        // Handle UPDATE action
-                      },
-                      child: Text('UPDATE'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue,
-                        shape: const BeveledRectangleBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(3.0),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          )
-        ],
+        ),
       ),
     );
   }
