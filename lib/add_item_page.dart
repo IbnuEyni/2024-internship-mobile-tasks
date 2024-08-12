@@ -1,10 +1,9 @@
 import 'dart:io';
-// import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:task_6/item.dart';
-import 'package:task_6/widgets/button_widget.dart';
+import 'item.dart';
+import 'widgets/button_widget.dart';
 
 class AddItemPage extends StatefulWidget {
   final String? id;
@@ -19,8 +18,7 @@ class _AddItemPageState extends State<AddItemPage> {
   final _categoryController = TextEditingController();
   final _priceController = TextEditingController();
   final _descriptionController = TextEditingController();
-  // final _ratingController = TextEditingController();
-  File? _imageFile; // To store the selected image file
+  File? _imageFile;
 
   late Item ourItem = Item(
       imageUrl: '',
@@ -124,10 +122,7 @@ class _AddItemPageState extends State<AddItemPage> {
         rating: 4.0,
         id: items.length + 1,
       );
-      setState(() {
-        // items.add(newItem);
-        debugPrint('item is added!');
-      });
+      setState(() {});
 
       _nameController.clear();
       _categoryController.clear();
@@ -146,10 +141,6 @@ class _AddItemPageState extends State<AddItemPage> {
       );
     }
   }
-
-  // void _deleteItem() {
-  //   Navigator.pop(context, 'delete');
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -170,14 +161,13 @@ class _AddItemPageState extends State<AddItemPage> {
                       Navigator.pop(context);
                     },
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                          Colors.white), // White background
-                      shape: MaterialStateProperty.all<OutlinedBorder>(
-                        const CircleBorder(), // Circular shape
+                      backgroundColor:
+                          WidgetStateProperty.all<Color>(Colors.white),
+                      shape: WidgetStateProperty.all<OutlinedBorder>(
+                        const CircleBorder(),
                       ),
-                      padding: MaterialStateProperty.all<EdgeInsets>(
-                        const EdgeInsets.all(
-                            16), // Adjust padding to control size
+                      padding: WidgetStateProperty.all<EdgeInsets>(
+                        const EdgeInsets.all(16),
                       ),
                     ),
                   ),
@@ -213,15 +203,13 @@ class _AddItemPageState extends State<AddItemPage> {
                                     size: 50,
                                     color: Colors.grey[600],
                                   ),
-                                  const SizedBox(
-                                      height:
-                                          8.0), // Space between icon and text
+                                  const SizedBox(height: 8.0),
                                   const Text(
                                     'Upload Image',
                                     style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
-                                      color: Colors.black, // Text color
+                                      color: Colors.black,
                                     ),
                                   ),
                                 ],
@@ -282,7 +270,7 @@ class _AddItemPageState extends State<AddItemPage> {
                       suffixIcon: const Padding(
                         padding: EdgeInsets.all(5.0),
                         child: Text("\$"),
-                      ), // Dollar sign at the end
+                      ),
                     ),
                   ),
                 ],
@@ -311,7 +299,6 @@ class _AddItemPageState extends State<AddItemPage> {
                   isFilled: true,
                   buttonWidth: double.infinity,
                   onPressed: () {
-                    // _addItem();
                     _updateItem();
                   },
                 ),
@@ -322,7 +309,6 @@ class _AddItemPageState extends State<AddItemPage> {
                   buttonWidth: double.infinity,
                   onPressed: () {
                     _addItem();
-                    // _updateItem();
                   },
                 ),
               if (isEditing) const SizedBox(height: 16.0),

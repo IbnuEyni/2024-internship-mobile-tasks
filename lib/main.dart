@@ -2,10 +2,10 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:task_6/add_item_page.dart';
-import 'package:task_6/detail_page.dart';
-import 'package:task_6/item.dart';
-import 'package:task_6/search_page.dart';
+import '/add_item_page.dart';
+import '/detail_page.dart';
+import '/item.dart';
+import '/search_page.dart';
 
 SlideTransition buildSlideTransition(
     Animation<double> animation, Widget child) {
@@ -26,7 +26,6 @@ SlideTransition buildSlideTransition(
 }
 
 void main() {
-  // var item;
   runApp(
     MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -36,7 +35,8 @@ void main() {
           case '/':
             Map? map = settings.arguments as Map?;
             return PageRouteBuilder(
-              pageBuilder: (context, animation, secondaryAnimation) => HomePage(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  const HomePage(
                 map: {},
               ),
               transitionsBuilder:
@@ -100,15 +100,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // late List<Item> itemList = [];
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   itemList = items;
-  //   print('kkkkkkkkkkkkkkkk ${itemList.length}');
-  // }
-
-  // { "id":1, "item":object }
   @override
   void initState() {
     super.initState();
@@ -144,14 +135,11 @@ class _HomePageState extends State<HomePage> {
                   Row(
                     children: [
                       Container(
-                        width: 40, // Adjust the width to the expected logo size
-                        height:
-                            45, // Adjust the height to the expected logo size
+                        width: 40,
+                        height: 45,
                         decoration: BoxDecoration(
-                          color: const Color.fromARGB(255, 207, 206,
-                              206), // Set the background color to grey
-                          borderRadius: BorderRadius.circular(
-                              10.0), // Set the border radius here
+                          color: const Color.fromARGB(255, 207, 206, 206),
+                          borderRadius: BorderRadius.circular(10.0),
                         ),
                       ),
                       const SizedBox(width: 10),
@@ -198,9 +186,9 @@ class _HomePageState extends State<HomePage> {
                       //
                     },
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                          Colors.white), // White background
-                      shape: MaterialStateProperty.all<OutlinedBorder>(
+                      backgroundColor:
+                          WidgetStateProperty.all<Color>(Colors.white),
+                      shape: WidgetStateProperty.all<OutlinedBorder>(
                         const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(
                             Radius.circular(10),
@@ -210,9 +198,8 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                       ),
-                      padding: MaterialStateProperty.all<EdgeInsets>(
-                        const EdgeInsets.all(
-                            5), // Adjust padding to control size
+                      padding: WidgetStateProperty.all<EdgeInsets>(
+                        const EdgeInsets.all(5),
                       ),
                     ),
                   ),
@@ -252,7 +239,6 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                     onTap: () {
-                      // _showSearchModal(context);
                       Navigator.pushNamed(
                         context,
                         '/search',
