@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:task_6/item.dart';
-import 'package:task_6/widgets/button_widget.dart';
-import 'package:task_6/widgets/number_card.dart';
+import 'item.dart';
+import 'widgets/button_widget.dart';
+import 'widgets/number_card.dart';
 
 class DetailPage extends StatefulWidget {
   final String id;
@@ -13,14 +13,6 @@ class DetailPage extends StatefulWidget {
 
 class _DetailPageState extends State<DetailPage> {
   void _deleteItem() {
-    // for (final item in items) {
-    //   if (item.id.toString() == widget.id) {
-    //     print('iddddddd ${items.length}');
-    //     items.remove(item);
-    //     print('iddddddd ${items.length}');
-    //   }
-    // }
-
     Navigator.pop(context, 'delete');
   }
 
@@ -54,10 +46,8 @@ class _DetailPageState extends State<DetailPage> {
                 children: <Widget>[
                   ClipRRect(
                     borderRadius: const BorderRadius.only(
-                      topLeft:
-                          Radius.circular(40.0), // Adjust the radius as needed
-                      topRight:
-                          Radius.circular(40.0), // Adjust the radius as needed
+                      topLeft: Radius.circular(40.0),
+                      topRight: Radius.circular(40.0),
                     ),
                     child: Image.asset(
                       ourItem.imageUrl,
@@ -77,14 +67,13 @@ class _DetailPageState extends State<DetailPage> {
                         Navigator.pop(context);
                       },
                       style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                            Colors.white), // White background
-                        shape: MaterialStateProperty.all<OutlinedBorder>(
-                          const CircleBorder(), // Circular shape
+                        backgroundColor:
+                            WidgetStateProperty.all<Color>(Colors.white),
+                        shape: WidgetStateProperty.all<OutlinedBorder>(
+                          const CircleBorder(),
                         ),
-                        padding: MaterialStateProperty.all<EdgeInsets>(
-                          const EdgeInsets.all(
-                              10), // Adjust padding to control size
+                        padding: WidgetStateProperty.all<EdgeInsets>(
+                          const EdgeInsets.all(10),
                         ),
                       ),
                     ),
@@ -170,22 +159,9 @@ class _DetailPageState extends State<DetailPage> {
                           title: 'UPDATE',
                           buttonWidth: 152,
                           isFilled: true,
-                          onPressed: () async {
-                            final updatedProduct = await Navigator.pushNamed(
-                              context,
-                              '/update',
-                              arguments: ourItem.id.toString(),
-                            );
-
-                            // if (updatedProduct is Item) {
-                            //   setState(() {
-                            //     final index = items.indexWhere(
-                            //         (element) => element.id == ourItem.id);
-                            //     if (index != -1) {
-                            //       items[index] = updatedProduct;
-                            //     }
-                            //   });
-                            // }
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/update',
+                                arguments: ourItem.id.toString());
                           },
                         ),
                       ],
