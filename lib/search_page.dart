@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:task_6/detail_page.dart';
-import 'package:task_6/item.dart';
-import 'package:task_6/widgets/button_widget.dart';
+import 'detail_page.dart';
+import 'item.dart';
+import 'widgets/button_widget.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -53,7 +53,7 @@ class _SearchPageState extends State<SearchPage> {
                           ),
                         ),
                         onChanged: (value) {
-                          // Add logic to filter by name
+                          
                         },
                       ),
                     ],
@@ -109,12 +109,12 @@ class _SearchPageState extends State<SearchPage> {
             Navigator.pop(context);
           },
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all<Color>(
+            backgroundColor: WidgetStateProperty.all<Color>(
                 Colors.white), // White background
-            shape: MaterialStateProperty.all<OutlinedBorder>(
+            shape: WidgetStateProperty.all<OutlinedBorder>(
               const CircleBorder(), // Circular shape
             ),
-            padding: MaterialStateProperty.all<EdgeInsets>(
+            padding: WidgetStateProperty.all<EdgeInsets>(
               const EdgeInsets.all(16), // Adjust padding to control size
             ),
           ),
@@ -207,9 +207,9 @@ class _SearchPageState extends State<SearchPage> {
                           ClipRRect(
                             borderRadius: const BorderRadius.only(
                               topLeft: Radius.circular(
-                                  32.0), // Adjust the radius as needed
+                                  32.0), 
                               topRight: Radius.circular(
-                                  32.0), // Adjust the radius as needed
+                                  32.0),
                             ),
                             child: Image.asset(
                               item.imageUrl,

@@ -22,7 +22,7 @@ class _DetailPageState extends State<DetailPage> {
       price: 0,
       description: '',
       rating: 0,
-      id: 0,
+      id: 0,  
       category: '');
   @override
   void initState() {
